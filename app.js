@@ -36,6 +36,7 @@ async function main() {
     await mongoose.connect(dbUrl);
 }
 
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -63,25 +64,20 @@ const sessionOptions = {
     resave: false, 
     saveUninitialized: true,
     cookie: {
-        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days from the date it is created
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         httpOnly: true,
     },
 };
-
-// app.get("/", (req, res) => {
-//     res.send("Hi, I am root");
-// });
-
 
 
 app.use(session(sessionOptions));
 app.use(flash());
 
+// Passport Configuration
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -92,15 +88,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.get("/demouser", async(req,res) => {
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: "delta-student",
-//     });
-
-//     let registeredUser = await User.register(fakeUser, "helloworld");
-//     res.send(registeredUser);
-// });
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);

@@ -9,5 +9,7 @@ const userSchema = new Schema({
     },
 });
 
+// plugin to add username, hash and salt fields to store the username, 
+// the hashed password and the salt value.
 userSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("User", userSchema);

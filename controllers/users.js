@@ -1,9 +1,11 @@
 const User = require("../models/user");
 
+// Controller function for rendering the signup form
 module.exports.renderSignupForm = (req, res) => {
     res.render("users/signup.ejs");
 };
 
+// Controller function for handling user signup
 module.exports.signup = async (req, res) => {
     try {
         let { username, email, password } = req.body;
@@ -14,7 +16,7 @@ module.exports.signup = async (req, res) => {
             if(err) {
                 return next(err);
             }
-            req.flash("success", "Welcome to Wanderlust!");
+            req.flash("success", "Welcome to Airbnb!");
             res.redirect("/listings");
         });  
     } catch (e) {
@@ -23,16 +25,19 @@ module.exports.signup = async (req, res) => {
     };
 };
 
+// Controller function for rendering the login form
 module.exports.renderLoginForm = (req,res) => {
     res.render("users/login.ejs");
 };
 
+// Controller function for handling user login
 module.exports.login = async(req, res) => {
-    req.flash("success", "Welcome back to Wanderlust!");
+    req.flash("success", "Welcome back to Airbnb!");
     let redirectUrl = res.locals.redirectUrl || "/listings";
     res.redirect(redirectUrl);
 };
 
+// Controller function for handling user logout
 module.exports.logout = (req, res, next) => {
     req.logOut((err) => {
         if(err) {

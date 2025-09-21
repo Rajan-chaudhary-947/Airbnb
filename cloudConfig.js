@@ -10,8 +10,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-      folder: 'wanderlust_DEV',
-      allowerdFormats: ["png", "jpg", "jped"], 
+      folder: 'airbnb',
+      allowerdFormats: ["png", "jpg", "jpeg"], 
     },
   });
 

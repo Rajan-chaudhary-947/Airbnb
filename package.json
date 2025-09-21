@@ -1,8 +1,8 @@
 {
   "engines": {
-    "node": "18.20.1"
+    "node": "23.3.0"
   },
-  "name": "major_project",
+  "name": "airbnb",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Rajan chaudhary",
   "license": "ISC",
   "dependencies": {
     "cloudinary": "^2.4.0",

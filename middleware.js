@@ -3,15 +3,17 @@ const Review = require("./models/review");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 
+// Middleware to check if the user is logged in
 module.exports.isLoggedIn = (req, res, next) => {
     if(!req.isAuthenticated()) {
         req.session.redirectUrl = req.originalUrl;
-        req.flash("error", "you must be logged in to create listing!");
+        req.flash("error", "Login to create listing!");
         return res.redirect("/login");
     }
     next();
 }
 
+// Middleware to save the URL the user was trying to access before being prompted to log in
 module.exports.saveRedirectUrl = (req, res, next) => {
     if(req.session.redirectUrl) {
         res.locals.redirectUrl = req.session.redirectUrl;
@@ -19,6 +21,7 @@ module.exports.saveRedirectUrl = (req, res, next) => {
     next();
 };
 
+// Middleware to check if the current user is the owner of the listing
 module.exports.isOwner = async (req, res, next) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
@@ -29,6 +32,7 @@ module.exports.isOwner = async (req, res, next) => {
     next();
 };
 
+// Middleware to validate listing data using Joi schema
 module.exports.validateListing = (req, res, next) => {
     let {error} = listingSchema.validate(req.body);
     if(error) {
@@ -39,6 +43,7 @@ module.exports.validateListing = (req, res, next) => {
     }
 };
 
+// Middleware to validate review data using Joi schema
 module.exports.validateReview = (req, res, next) => {
     let {error} = reviewSchema.validate(req.body);
     if(error) {
@@ -49,7 +54,7 @@ module.exports.validateReview = (req, res, next) => {
     }
 };
 
-
+// Middleware to check if the current user is the author of the review
 module.exports.isReviewAuthor = async (req, res, next) => {
     let { id, reviewId } = req.params;
     let review = await Review.findById(reviewId);

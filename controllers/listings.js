@@ -1,14 +1,17 @@
 const Listing = require("../models/listing");
 
+// Controller functions for rendering all listings
 module.exports.index = async (req, res) => {
     const allListings = await Listing.find({});
     res.render("./listings/index.ejs", { allListings });
 };
 
+// Controller function for rendering the form to create a new listing
 module.exports.renderNewForms = (req, res) => { 
     res.render("./listings/new.ejs")
 };
 
+// Controller function for showing a specific listing
 module.exports.showListing = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id).populate({path: "reviews", populate: {
@@ -24,6 +27,7 @@ module.exports.showListing = async (req, res) => {
     res.render("./listings/show.ejs", { listing });
 };
 
+// Controller function for creating a new listing
 module.exports.createListing = async (req, res, next) => {
     let url = req.file.path;
     let filename = req.file.filename;
@@ -36,6 +40,7 @@ module.exports.createListing = async (req, res, next) => {
     res.redirect("/listings");
 };
 
+// Controller function for rendering the edit form for a listing
 module.exports.renderEdit = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
@@ -49,6 +54,7 @@ module.exports.renderEdit = async (req, res) => {
     res.render("./listings/edit.ejs", { listing, originalImageUrl });
 };
 
+// Controller function for updating a listing
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
@@ -63,6 +69,7 @@ module.exports.updateListing = async (req, res) => {
     res.redirect(`/listings/${id}`);
 };
 
+// Controller function for deleting a listing
 module.exports.destroyListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
